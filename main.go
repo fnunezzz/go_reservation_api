@@ -1,6 +1,11 @@
 package main
 
 func main() {
-	server := NewServer(":3000")
+	storage, err := newPostgresConn()
+
+	if err != nil {
+		panic(err)
+	}
+	server := NewServer(":3000", storage)
 	server.Run()
 }

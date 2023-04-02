@@ -9,6 +9,7 @@ import (
 
 type ApiServer struct {
 	listenAddress string
+	storage Storage
 }
 
 type apiFunc func(http.ResponseWriter, *http.Request) error
@@ -27,9 +28,10 @@ func makeHttpHandleFunc(f apiFunc) http.HandlerFunc {
 	}
 }
 
-func NewServer(listenAddress string) *ApiServer {
+func NewServer(listenAddress string, storage Storage) *ApiServer {
 	return &ApiServer{
 		listenAddress: listenAddress,
+		storage: storage,
 	}
 }
 
