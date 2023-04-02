@@ -68,7 +68,8 @@ func (s *Database) createMigrationsTable() error {
 
 }
 
-
+// TODO
+// For now reading from files is OK. But in the future they should be able to be rollbacked aswell
 func (s *Database) runMigrations() error {
 	path := filepath.Join(os.Getenv("MIGRATIONS_PATH"))
 
