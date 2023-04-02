@@ -2,6 +2,8 @@
 version: '3.8'
 services:
     postgres:
+        build:
+          context: ./
         image: postgres:12
         restart: always
         environment:
