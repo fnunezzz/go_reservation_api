@@ -26,7 +26,7 @@ func (s *ApiServer) handleUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *ApiServer) handleGetUser(w http.ResponseWriter, r *http.Request) error {
-	mock := NewUser("Filipe", "nunez", 27)
+	mock := NewUser("Filipe", "nunez", 27, "1231", "ADas@dfada", "dadadqw")
 
 	return WriteJson(w, http.StatusOK, mock)
 

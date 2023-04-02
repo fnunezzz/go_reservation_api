@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -13,12 +12,13 @@ type Storage interface {
 }
 
 
-type Postgres struct {
+// Don't plan on using anything but PostgresSQL, but in case multiple databases becomes a feature pgx docs have it: https://github.com/jackc/pgx/wiki/Getting-started-with-pgx-through-database-sql#getting-started-with-pgx-through-databasesql
+type Database struct {
 	conn *pgxpool.Pool
 }
 
 
-func newPostgresConn() (*Postgres, error) {
+func newPostgresConn() (*Database, error) {
 	dbpool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
 		return nil, err
@@ -28,19 +28,13 @@ func newPostgresConn() (*Postgres, error) {
 		return nil, err
 	}
 
-
-	defer dbpool.Close()
-	var greeting string
-
-	fmt.Println(greeting)
-
-	return &Postgres{
+	return &Database{
 		conn: dbpool,
 	}, nil
 }
 
 
-func (s *Postgres) CreateUser(*User) error {
+func (s *Database) CreateUser(*User) error {
 
 	return nil
 }

@@ -7,6 +7,8 @@ type CreateUserRequest struct {
 	LastName string `json:"lastName"`
 	Age int `json:"age"`
 	CPF string `json:"cpf"`
+	Email string `json:"email"`
+	Password string `json:"password"`
 }
 
 type User struct {
@@ -15,13 +17,18 @@ type User struct {
 	LastName string `json:"lastName"`
 	Age int `json:"age,omitempty"`
 	CPF string `json:"cpf,omitempty"`
+	Email string `json:"email"`
+	Password string `json:"password,omitempty"`
 }
 
-func NewUser(firstName string, LastName string, age int) *User {
+func NewUser(firstName string, LastName string, age int, cpf string, email string, password string) *User {
 	return &User{
 		ID: uuid.NewString(),
 		FirstName: firstName,
 		LastName: LastName,
 		Age: age,
+		CPF: cpf,
+		Email: email,
+		Password: password,
 	}
 }
