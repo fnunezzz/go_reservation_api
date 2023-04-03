@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/paemuri/brdoc"
 )
 
 type CreateUserRequest struct {
@@ -51,13 +52,26 @@ func NewUser(firstName string, LastName string, age int, cpf string, email strin
 
 	if cpf == "" {
 		return nil, fmt.Errorf("CPF must be informed")
+	} else if !brdoc.IsCPF(cpf) {
+		return nil, fmt.Errorf("CPF must be valid")
 	}
+	
 	if email == "" {
 		return nil, fmt.Errorf("email must be informed")
 	}
 	
 	if password == "" {
 		return nil, fmt.Errorf("password must be informed")
+	} else if err := CheckPasswordStrength(password); err != nil {
+		return nil, err
+	}
+
+	var hash string 
+
+	if h, err := HashPassword(password); err != nil {
+		return nil, fmt.Errorf("error saving user")
+	} else {
+		hash = h
 	}
 
 	return &User{
@@ -67,7 +81,7 @@ func NewUser(firstName string, LastName string, age int, cpf string, email strin
 		Age: age,
 		CPF: cpf,
 		Email: email,
-		Password: password,
+		Password: hash,
 	}, nil
 }
 
