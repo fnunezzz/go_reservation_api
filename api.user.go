@@ -41,7 +41,7 @@ func (s *ApiServer) handleLoginUser(w http.ResponseWriter, r *http.Request) erro
 		return err
 	}
 
-	return WriteJson(w, http.StatusOK, &UserResponse{ID: user.ID, FirstName: user.FirstName, LastName: user.LastName}) // mock
+	return WriteJson(w, http.StatusOK, &UserResponse{ID: user.ID, FirstName: user.FirstName, LastName: user.LastName})
 
 }
 
@@ -50,7 +50,7 @@ func (s *ApiServer) handleGetUser(w http.ResponseWriter, r *http.Request) error 
 
 	fmt.Println(id)
 
-	return WriteJson(w, http.StatusOK, &UserResponse{ID: id}) // mock
+	return WriteJson(w, http.StatusCreated, &UserResponse{ID: id}) // mock
 
 }
 

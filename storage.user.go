@@ -32,13 +32,13 @@ func (s *Database) GetUser(email string, password string) (*User, error) {
 
 func (s *Database) CreateUser(user *User) error {
 
-	err := s.getUserByCPF(user.CPF)
+	err := s.checkIfUserExistsByCpf(user.CPF)
 
 	if err != nil {
 		return err
 	}
 
-	err = s.getUserByEmail(user.Email)
+	err = s.checkIfUserExistsByEmail(user.Email)
 
 	if err != nil {
 		return err
@@ -69,7 +69,7 @@ func (s *Database) CreateUser(user *User) error {
 }
 
 
-func (s *Database) getUserByCPF(cpf string) error {
+func (s *Database) checkIfUserExistsByCpf(cpf string) error {
 
 	sql := `
 	select id from users where cpf = $1
@@ -90,7 +90,7 @@ func (s *Database) getUserByCPF(cpf string) error {
 }
 
 
-func (s *Database) getUserByEmail(email string) error {
+func (s *Database) checkIfUserExistsByEmail(email string) error {
 
 	sql := `
 	select id from users where email = $1
