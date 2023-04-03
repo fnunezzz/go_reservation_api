@@ -9,6 +9,7 @@ import (
 
 type Storage interface {
 	CreateUser(*User) error
+	GetUser(string, string) (*User, error)
 }
 
 

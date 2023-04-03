@@ -5,6 +5,31 @@ import (
 	"fmt"
 )
 
+func (s *Database) GetUser(email string, password string) (*User, error) {
+
+	sql := `
+		select id, first_name, last_name, password from users where email = $1
+	`
+	user := User{}
+
+	err := s.conn.QueryRow(
+		context.Background(), 
+		sql, 
+		email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Password)
+
+	if err != nil {
+		return nil, fmt.Errorf("email or password are wrong")
+	}
+
+
+	if valid := CheckPasswordHash(password, user.Password); !valid {
+		return nil, fmt.Errorf("email or password are wrong")
+	}
+
+
+	return &user, nil
+}
+
 func (s *Database) CreateUser(user *User) error {
 
 	err := s.getUserByCPF(user.CPF)

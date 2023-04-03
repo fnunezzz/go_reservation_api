@@ -14,6 +14,9 @@ func (s *ApiServer) UserHandler(router *mux.Router) {
 }
 
 func (s *ApiServer) handleUser(w http.ResponseWriter, r *http.Request) error {
+	if r.Method == "POST" {
+		return s.handleLoginUser(w, r)
+	}
 	if r.Method == "PUT" {
 		return s.handleCreateUser(w, r)
 	}
@@ -22,6 +25,24 @@ func (s *ApiServer) handleUser(w http.ResponseWriter, r *http.Request) error {
 	}
 	
 	return fmt.Errorf("method not allowed %s", r.Method)
+}
+
+func (s *ApiServer) handleLoginUser(w http.ResponseWriter, r *http.Request) error {
+	loginUserRequest := &LoginUserRequest{}
+
+	if err := json.NewDecoder(r.Body).Decode(loginUserRequest); err != nil {
+		return err
+	}
+
+
+	user, err := s.storage.GetUser(loginUserRequest.Email, loginUserRequest.Password);
+
+	if err != nil {
+		return err
+	}
+
+	return WriteJson(w, http.StatusOK, &UserResponse{ID: user.ID, FirstName: user.FirstName, LastName: user.LastName}) // mock
+
 }
 
 func (s *ApiServer) handleGetUser(w http.ResponseWriter, r *http.Request) error {
