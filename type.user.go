@@ -63,6 +63,8 @@ func NewUser(firstName string, LastName string, age int, cpf string, email strin
 	
 	if email == "" {
 		return nil, fmt.Errorf("email must be informed")
+	} else if !IsValidEmail(email) {
+		return  nil, fmt.Errorf("email is not valid")
 	}
 	
 	if password == "" {
