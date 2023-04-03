@@ -17,3 +17,32 @@ First, get yourself a Postgress Database. I prefer a local one, so use `docker-c
 If for some reason you need to change credentials edit the Makefile `DATABASE_URL` env.
 
 It has a basic migration functionality (to be refactored.... one day), so just running it will do everything and set you up correctly.
+
+
+## Requests
+
+### Creating User
+
+`PUT` - `localhost:3000/user`
+
+```json
+{
+    "firstName": "",
+    "lastName": "",
+    "age": 0,
+    "email": "",
+    "cpf": "",
+    "password": ""
+}
+```
+
+### Login
+
+`POST` - `localhost:3000/user`
+
+```json
+{
+    "email": "",
+    "password": ""
+}
+```
