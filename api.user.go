@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -26,9 +25,11 @@ func (s *ApiServer) handleUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *ApiServer) handleGetUser(w http.ResponseWriter, r *http.Request) error {
-	mock := NewUser("Filipe", "nunez", 27, "1231", "ADas@dfada", "dadadqw")
+	id := mux.Vars(r)["id"]
 
-	return WriteJson(w, http.StatusOK, mock)
+	fmt.Println(id)
+
+	return WriteJson(w, http.StatusOK, &UserResponse{ID: id}) // mock
 
 }
 
@@ -39,8 +40,20 @@ func (s *ApiServer) handleCreateUser(w http.ResponseWriter, r *http.Request) err
 		return err
 	}
 
-	log.Println(createUserRequest)
-	return nil
+
+	user, err := NewUser(createUserRequest.FirstName, createUserRequest.LastName, createUserRequest.Age, createUserRequest.CPF, createUserRequest.Email, createUserRequest.Password)
+
+
+	if err != nil {
+		return err
+	}
+
+
+	if err := s.storage.CreateUser(user); err != nil {
+		return err
+	}
+
+	return WriteJson(w, http.StatusOK, &UserResponse{ID: user.ID, FirstName: user.FirstName, LastName: user.LastName})
 }
 
 func (s *ApiServer) handleDeleteUser(w http.ResponseWriter, r *http.Request) error {

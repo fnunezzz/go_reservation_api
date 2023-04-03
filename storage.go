@@ -32,9 +32,3 @@ func newPostgresConn() (*Database, error) {
 		conn: dbpool,
 	}, nil
 }
-
-
-func (s *Database) CreateUser(*User) error {
-
-	return nil
-}
